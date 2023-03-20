@@ -54,6 +54,10 @@ def main():
                     gs.makeMove(move)
                     sqSelected = () # reset  user click 
                     playerClicks = []
+            
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_z:
+                    gs.undoMove()
 
 
 
