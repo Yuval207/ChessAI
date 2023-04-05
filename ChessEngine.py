@@ -15,24 +15,24 @@ class GameState():
             ["--" ,"--", "--", "--", "--", "--", "--", "--"],
             ["--" ,"--", "--", "--", "--", "--", "--", "--"],
             ["--" ,"--", "--", "--", "--", "--", "--", "--"],
-            ["--" ,"--", "--", "--", "--", "--", "--", "--"],
+            ["--" ,"--", "--", "bp", "--", "--", "--", "--"],
             ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
             ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"]
         ]
         self.whiteToMove = True
-        self.movelog = []
+        self.moveLog = []
     def makeMove(self, move):
         self.board[move.startRow][move.startCol] = '--'
         self.board[move.endRow][move.endCol] = move.pieceMoved
-        self.movelog.append(move) #log the move so we can undo it later
+        self.moveLog.append(move) #log the move so we can undo it later
         self.whiteToMove = not self.whiteToMove #swap Players
 
     
     #Undo Last move made
 
     def undoMove(self):
-        if len(self.movelog) != 0:
-            move = self.movelog.pop()
+        if len(self.moveLog) != 0:
+            move = self.moveLog.pop()
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove 
@@ -51,8 +51,10 @@ class GameState():
         moves = []
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
-                turn = self.board[r][0]
+                turn = self.board[r][c][0]
+                print("nice")
                 if(turn == 'w' and self.whiteToMove) or (turn == 'b' and not self.whiteToMove):
+                    
                     piece = self.board[r][c][1]
                     if piece == 'p':
                         self.getPawnMoves(r, c, moves)
@@ -76,7 +78,7 @@ class GameState():
                     moves.append(Move((r, c), (r-1, c-1), self.board))
 
             if c+1 <= 7: #captures to the right 
-                if self.board[r-1][c-1][0] == "b":
+                if self.board[r-1][c+1][0] == "b":
                     moves.append(Move((r, c), (r-1, c+1), self.board))
 
 
